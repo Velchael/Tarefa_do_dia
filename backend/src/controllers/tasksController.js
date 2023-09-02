@@ -1,7 +1,8 @@
 const tasksModel = require('../models/tasksModel');
 
-const getAll = async (_request, response) => {
-  return response.status(200).json({ message: 'controller esta tudo bem'});
+const getAll = async (request, response) => {
+  const tasks = await tasksModel.getAll();
+  return response.status(200).json(tasks);
 };
 
 module.exports = {
