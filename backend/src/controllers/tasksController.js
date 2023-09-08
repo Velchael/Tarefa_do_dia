@@ -6,9 +6,11 @@ const getAll = async (_request, response) => {
 };
 
 const createTask = async (request, response) => {
-  const createdTask = await tasksModel.createTask(request.body);
+  const { registeruser, title } = request.body; 
+  const createdTask = await tasksModel.createTask({ registeruser, title }); // Pasa userId a tasksModel
   return response.status(201).json(createdTask);
 };
+
 const deleteTask = async (request, response) => {
   const { id } = request.params;
 

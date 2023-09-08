@@ -6,13 +6,13 @@ const getAll = async () => {
 };
 
 const createTask = async (task) => {
-  const { title } = task;
+  const { registeruser, title } = task; // Agrega userId a los datos recibidos
   const dateUTC = new Date(Date.now()).toUTCString();
 
-  const query = 'INSERT INTO tasks(title, status, created_at) VALUES (?, ?, ?)';
+  const query = 'INSERT INTO tasks(registeruser, title, status, created_at) VALUES (?, ?, ?, ?)'; // Agrega registeruser a la consulta
 
-  const [createdTask] = await connection.execute(query, [title, 'pendente', dateUTC]);
-  return {insertId: createdTask.insertId};
+  const [createdTask] = await connection.execute(query, [registeruser, title, 'pendente', dateUTC]);
+  return { insertId: createdTask.insertId };
 };
 
 const deleteTask = async (id) => {

@@ -1,11 +1,77 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>frontend</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <title>Lista de Tarefas</title>
 </head>
 <body>
-    
+  <section>
+    <h2 class="title">Tarefa do dia da familia</h2>
+    <div class="form-container">
+      <h2>Iniciar Sesión</h2>
+      <form class="login-form">
+         <input type="text" placeholder="Adicionar Nome:" class="login-name" required>
+          <button type="submit">Iniciar sessão</button>
+      </form>
+      <p id="registration-message"class="bold" style="display: none;"></p>
+  </div>
+  <div class="form-container">
+    <h2>Registro</h2>
+    <form class="register-form">
+        <input type="text" placeholder="Adicionar Nome:" class="register-name" required>
+        <input type="email" placeholder="juan@gmail.com" class="register-email" required>
+        <input type="password" placeholder="Senha:12345" class="register-password" required>
+        <button type="submit">Registrarse</button>
+    </form>
+    <p id="registration-messagedos"class="bold" style="display: none;"></p>
+</div>
+  </section>
+  <main>
+    <p id="user-tarefa"class="bold" style="display: none;"></p>
+    <form class="add-form">
+      <input type="text" placeholder="Adicionar tarefa" class="input-task">
+      <button type="submit">+</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Tarefa</th>
+          <th>Criada em</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+       <!--
+<tr>
+          <td>título da task</td>
+          <td>00 de janeiro de 2023 15:00</td>
+          <td>
+            <select>
+              <option value="pendente">pendente</option>
+              <option value="em andamento">em andamento</option>
+              <option value="concluída">concluída</option>
+            </select>
+          </td>
+          <td>
+            <button class="btn-action">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+
+            <button class="btn-action">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </td>
+        </tr> 
+       --> 
+      </tbody>
+    </table>
+  </main>
+
+  <script src="./js/script.js"></script>
 </body>
 </html>
