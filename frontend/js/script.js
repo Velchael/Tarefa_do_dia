@@ -12,48 +12,44 @@ const registrationMessagedos = document.querySelector('#registration-messagedos'
 const usertarefa = document.querySelector('#user-tarefa');
 
 const loginUser = async (event) => {
+  registrationMessage.textContent = '';
+  registrationMessage.style.color = '';
+  registrationMessage.style.display = '';
+  inputName.value = '';
   event.preventDefault();
   // Crear el objeto user con los valores de los inputs
   const user = { username: inputLoginName.value };
-  console.log('Valores a insertar:', user);
-
 try {
-   // Hacer la petición POST para registrar el usuario
    const response = await fetch(`http://localhost:3307/users/${user.username}`, {
     method: 'get',
   });
 
   if (response.ok) {
-    registrationMessage.textContent = 'Iniciar Sesión éxito...';
+    registrationMessage.textContent = 'Iniciar Sesión com éxito...';
     registrationMessage.style.color = 'green';
     registrationMessage.style.display = 'block';
 
-    // Limpia los campos después de enviar el formulario
     var tarefauser = inputLoginName.value;
     usertarefa.innerHTML = 'Seja bem-vindo: <span style="color: black;">' + tarefauser + '</span>';
     usertarefa.style.color = 'green';
     usertarefa.style.display = 'block';
 
-   // inputLoginName.value = '';
-    
 } else {
     registrationMessage.textContent = 'Hubo un error la Sesion. faça de novo.';
     registrationMessage.style.color = 'red';
     registrationMessage.style.display = 'block';
    }
 } catch (error) {
-  //console.error("Hubo un error en la petición:", error);
-  alert('Hubo un error en la petición: ' + error.message);
+
   registrationMessage.textContent = 'Error durante el registro. faça mais tarde...';
   registrationMessage.style.color = 'red';
   registrationMessage.style.display = 'block';
 }
- 
+loadTasks();
 };
 // Vincular la función al evento submit del formulario
 loginform.addEventListener('submit', loginUser);
 
-// Función para manejar el envío del formulario
 const registerUser = async (event) => {
   event.preventDefault();
   // Crear el objeto user con los valores de los inputs
@@ -70,41 +66,50 @@ const registerUser = async (event) => {
     registrationMessagedos.textContent = 'El registro se realizó con éxito...';
     registrationMessagedos.style.color = 'green';
     registrationMessagedos.style.display = 'block';
-
-    // Limpia los campos después de enviar el formulario
-    //inputName.value = '';
-    //inputEmail.value = '';
-    //inputPassword.value = '';
-    var tarefauser = inputName.value;
-    usertarefa.innerHTML = 'Seja bem-vindo: <span style="color: black;">' + tarefauser + '</span>';
-    usertarefa.style.color = 'green';
-    usertarefa.style.display = 'block';
-
+  
   } else {
     registrationMessagedos.textContent = 'Error no registro. Faça de novo';
     registrationMessagedos.style.color = 'red';
     registrationMessagedos.style.display = 'block';
   }
-
 } catch (error) {
   //console.error("Hubo un error en la petición:", error);
-  registrationMessagedos.textContent = 'Error. Faça de novo, mais tarde';
+  registrationMessagedos.textContent = 'Error. Faça de novo, mais xxxx';
   registrationMessagedos.style.color = 'red';
   registrationMessagedos.style.display = 'block';
 }
+
+inputEmail.value = '';
+inputPassword.value = '';
+registrationMessagedos.textContent = '';
+registrationMessagedos.style.color = '';
+registrationMessagedos.style.display = '';
+loadTasks();
 }
 // Vincular la función al evento submit del formulario
 registerForm.addEventListener('submit', registerUser);
 
-const fetchTasks = async () => {
-  const response = await fetch('http://localhost:3307/tasks')
-  const tasks = await response.json()
-  return tasks;
-}
+const fetchTasksLogin = async (username) => {
+  try {
+    const response = await fetch(`http://localhost:3307/tasks/${username}`);
+  
+    if (!response.ok) {
+      throw new Error('Error al obtener tareas.');
+    }
+
+    const tasks = await response.json();
+    
+    return tasks;
+  } catch (error) {
+    console.error("Error en fetchTasksLogin:", error.message);
+    return []; // Retorna un array vacío en caso de error.
+  }
+  
+};
+
 
 const addTask = async (event) => {
   event.preventDefault();
-
   const task = { registeruser: inputLoginName.value, title: inputTask.value };
 
   await fetch('http://localhost:3307/tasks', {
@@ -112,18 +117,21 @@ const addTask = async (event) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(task),
   });
-
   loadTasks();
   inputTask.value = '';
 }
+
 
 const deleteTask = async (id) => {
   await fetch(`http://localhost:3307/tasks/${id}`, {
     method: 'delete',
   });
+
   loadTasks();
 }
+
 const updateTask = async ({ id, title, status }) => {
+
   await fetch(`http://localhost:3307/tasks/${id}`, {
     method: 'put',
     headers: { 'Content-Type': 'application/json' },
@@ -137,15 +145,18 @@ const formatDate = (dateUTC) => {
   const date = new Date(dateUTC).toLocaleString('pt-br', options);
   return date;
 }
+
 const createElement = (tag, innerText = '', innerHTML = '') => {
   const element = document.createElement(tag);
 
   if (innerText) {
     element.innerText = innerText;
   }
+
   if (innerHTML) {
     element.innerHTML = innerHTML;
   }
+
   return element;
 }
 
@@ -166,6 +177,7 @@ const createSelect = (value) => {
 const createRow = (task) => {
 
   const { id, title, created_at, status } = task;
+
   const tr = createElement('tr');
   const tdTitle = createElement('td', title);
   const tdCreatedAt = createElement('td', formatDate(created_at));
@@ -215,7 +227,8 @@ const createRow = (task) => {
 }
 
 const loadTasks = async () => {
-  const tasks = await fetchTasks();
+const user = { username: inputLoginName.value };
+const tasks = await fetchTasksLogin(user.username);
 
   tbody.innerHTML = '';
 
@@ -223,7 +236,9 @@ const loadTasks = async () => {
     const tr = createRow(task);
     tbody.appendChild(tr);
   });
+  
 }
+
 addForm.addEventListener('submit', addTask);
 
 loadTasks();

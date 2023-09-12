@@ -1,8 +1,8 @@
 const connection = require('./connection');
 
-const getAll = async () => {
-  const tasks = await connection.execute('SELECT * FROM tasks');
-  return tasks[0];
+const getAll = async (registeruser) => {
+  const [tasks] = await connection.execute('SELECT * FROM tasks WHERE registeruser = ?', [registeruser]);
+  return tasks;
 };
 
 const createTask = async (task) => {

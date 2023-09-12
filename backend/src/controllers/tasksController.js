@@ -1,8 +1,16 @@
 const tasksModel = require('../models/tasksModel');
 
-const getAll = async (_request, response) => {
-  const tasks = await tasksModel.getAll();
-  return response.status(200).json(tasks);
+const getAll = async (request, response) => {
+  const { registeruser } = request.params;
+
+  const tasks = await tasksModel.getAll(registeruser);
+  //return response.status(200).json(tasks);
+
+  if (tasks && tasks.length > 0) {
+    return response.status(200).json(tasks); // 200 OK con la información del usuario
+  } else {
+    return response.status(404).json({ message: 'Tarefa not found' }); // 404 Not Found si el usuario no existe
+  }
 };
 
 const createTask = async (request, response) => {
