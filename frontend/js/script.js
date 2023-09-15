@@ -13,8 +13,9 @@ const usertarefa = document.querySelector('#user-tarefa');
 
 const loginUser = async (event) => {
   registrationMessage.textContent = '';
-  registrationMessage.style.color = '';
-  registrationMessage.style.display = '';
+  registrationMessagedos.textContent = '';
+  //registrationMessage.style.color = '';
+  //registrationMessage.style.display = '';
   inputName.value = '';
   event.preventDefault();
   // Crear el objeto user con los valores de los inputs
@@ -38,12 +39,13 @@ try {
     registrationMessage.textContent = 'Hubo un error la Sesion. faça de novo.';
     registrationMessage.style.color = 'red';
     registrationMessage.style.display = 'block';
+    usertarefa.innerHTML = ''
    }
 } catch (error) {
-
   registrationMessage.textContent = 'Error durante el registro. faça mais tarde...';
   registrationMessage.style.color = 'red';
   registrationMessage.style.display = 'block';
+  usertarefa.innerHTML = ''
 }
 loadTasks();
 };
@@ -51,6 +53,7 @@ loadTasks();
 loginform.addEventListener('submit', loginUser);
 
 const registerUser = async (event) => {
+  registrationMessage.textContent = '';
   event.preventDefault();
   // Crear el objeto user con los valores de los inputs
   const user = { username: inputName.value, email: inputEmail.value, password: inputPassword.value };
@@ -74,16 +77,16 @@ const registerUser = async (event) => {
   }
 } catch (error) {
   //console.error("Hubo un error en la petición:", error);
-  registrationMessagedos.textContent = 'Error. Faça de novo, mais xxxx';
+  registrationMessagedos.textContent = 'Error. Faça de novo, mais tarde';
   registrationMessagedos.style.color = 'red';
   registrationMessagedos.style.display = 'block';
 }
 
 inputEmail.value = '';
 inputPassword.value = '';
-registrationMessagedos.textContent = '';
-registrationMessagedos.style.color = '';
-registrationMessagedos.style.display = '';
+//registrationMessagedos.textContent = '';
+//registrationMessagedos.style.color = '';
+//registrationMessagedos.style.display = '';
 loadTasks();
 }
 // Vincular la función al evento submit del formulario
