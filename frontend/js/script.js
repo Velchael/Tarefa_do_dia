@@ -14,19 +14,17 @@ const usertarefa = document.querySelector('#user-tarefa');
 const loginUser = async (event) => {
   registrationMessage.textContent = '';
   registrationMessagedos.textContent = '';
-  //registrationMessage.style.color = '';
-  //registrationMessage.style.display = '';
   inputName.value = '';
   event.preventDefault();
   // Crear el objeto user con los valores de los inputs
   const user = { username: inputLoginName.value };
 try {
-   const response = await fetch(`http://localhost:3307/users/${user.username}`, {
+   const response = await fetch(`http://localhost:3307/users/username/${user.username}`, {
     method: 'get',
   });
 
   if (response.ok) {
-    registrationMessage.textContent = 'Iniciar Sesión com éxito...';
+    registrationMessage.textContent = 'Usuario existe, Iniciar Sesión';
     registrationMessage.style.color = 'green';
     registrationMessage.style.display = 'block';
 
@@ -36,57 +34,79 @@ try {
     usertarefa.style.display = 'block';
 
 } else {
-    registrationMessage.textContent = 'Hubo un error la Sesion. faça de novo.';
+    registrationMessage.textContent = 'Usuario não existe. faça de novo.';
     registrationMessage.style.color = 'red';
     registrationMessage.style.display = 'block';
     usertarefa.innerHTML = ''
    }
 } catch (error) {
-  registrationMessage.textContent = 'Error durante el registro. faça mais tarde...';
+  registrationMessage.textContent = 'Erro de conexão. faça mais tarde';
   registrationMessage.style.color = 'red';
   registrationMessage.style.display = 'block';
   usertarefa.innerHTML = ''
 }
 loadTasks();
 };
-// Vincular la función al evento submit del formulario
+
 loginform.addEventListener('submit', loginUser);
+
+const userExists = async (email) => {
+  try {
+    const response = await fetch(`http://localhost:3307/users/email/${email}`);
+    if (response.ok) {
+      const user = await response.json();
+      return !!user; // Regresa true si el usuario existe, false en caso contrario
+    }
+    return false;
+  } catch (error) {
+    console.error('Erro: al verificar el usuario:', error);
+    return false;
+  }
+};
 
 const registerUser = async (event) => {
   registrationMessage.textContent = '';
+  registrationMessagedos.textContent = '';
+  inputLoginName.value = '';
   event.preventDefault();
   // Crear el objeto user con los valores de los inputs
   const user = { username: inputName.value, email: inputEmail.value, password: inputPassword.value };
- try {
-  // Hacer la petición POST para registrar el usuario
-  const response = await fetch('http://localhost:3307/users', {
-    method: 'post',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(user)
-  });
-  // Verificar si la respuesta es exitosa
-  if (response.ok) {
-    registrationMessagedos.textContent = 'El registro se realizó con éxito...';
-    registrationMessagedos.style.color = 'green';
+ 
+  if (await userExists(user.email)) {
+    registrationMessagedos.textContent = 'Erro: O usuario ja foi registrado';
+    registrationMessagedos.style.color = 'red';
     registrationMessagedos.style.display = 'block';
-  
-  } else {
-    registrationMessagedos.textContent = 'Error no registro. Faça de novo';
+    inputEmail.value = '';
+    inputPassword.value = '';
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3307/users', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    });
+
+    if (response.ok) {
+      registrationMessagedos.textContent = 'O registro foi feito com exito';
+      registrationMessagedos.style.color = 'green';
+      registrationMessagedos.style.display = 'block';
+    } else {
+      registrationMessagedos.textContent = 'Erro: ao registra';
+      registrationMessagedos.style.color = 'red';
+      registrationMessagedos.style.display = 'block';
+    }
+  } catch (error) {
+    registrationMessagedos.textContent = 'Erro: de conexão, tente mais tarde';
     registrationMessagedos.style.color = 'red';
     registrationMessagedos.style.display = 'block';
   }
-} catch (error) {
-  //console.error("Hubo un error en la petición:", error);
-  registrationMessagedos.textContent = 'Error. Faça de novo, mais tarde';
-  registrationMessagedos.style.color = 'red';
-  registrationMessagedos.style.display = 'block';
-}
-
+//registrationMessagedos.textContent = '';
+inputName.value = '';
 inputEmail.value = '';
 inputPassword.value = '';
-//registrationMessagedos.textContent = '';
-//registrationMessagedos.style.color = '';
-//registrationMessagedos.style.display = '';
+
 loadTasks();
 }
 // Vincular la función al evento submit del formulario

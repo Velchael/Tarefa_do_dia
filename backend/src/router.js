@@ -12,5 +12,6 @@ router.put('/tasks/:id',
   tasksController.updateTask,
 );
 router.post('/users', usersController.createUsers);
-router.get('/users/:username', usersController.getUserByUsername);
+router.get('/users/username/:username', usersController.getUserByUsername);
+router.get('/users/email/:email', usersController.getUserByEmail);
 module.exports = router;

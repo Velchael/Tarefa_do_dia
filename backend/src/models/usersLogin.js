@@ -15,12 +15,17 @@ const createUsers = async (users) => {
 };
 
 const getUserByUsername = async (username) => {
-//console.log('Nombre de usuario:', user.username);
   const [user] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
+  return user;
+};
+
+const getUserByEmail = async (email) => {
+  const [user] = await connection.execute('SELECT * FROM users WHERE email = ?', [email]);
   return user;
 };
 
 module.exports = {
   createUsers,
   getUserByUsername,
+  getUserByEmail,
 };

@@ -8,7 +8,7 @@ const createUsers = async (request, response) => {
 const getUserByUsername = async (request, response) => {
   const { username } = request.params;
   const user = await usersLogin.getUserByUsername(username);
-  //console.log('Información del usuario obtenida:', user);
+
   if (user && user.length > 0) {
     return response.status(200).json({ message: 'User ja exite' }); // 200 OK con la información del usuario
   } else {
@@ -16,7 +16,23 @@ const getUserByUsername = async (request, response) => {
   }
 };
 
+const getUserByEmail = async (request, response) => {
+  try {
+    const { email } = request.params;
+    const user = await usersLogin.getUserByEmail(email);
+    if (user.length > 0) {
+      response.status(200).json({ error: 'Email exite...' });
+    } else {
+      // Si el usuario no se encuentra, responder con un mensaje de error.
+      response.status(404).json({ error: 'Email not found...' });
+    }
+  } catch (error) {
+    response.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
   createUsers,
   getUserByUsername,
+  getUserByEmail,
 };
