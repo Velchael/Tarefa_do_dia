@@ -8,7 +8,10 @@
 }
 
 body {
-  background-color: #6abef6;
+  /*background-color: #6abef6;*/
+  background-image: url('imagenfondo2.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
 main {
