@@ -71,10 +71,10 @@ CREATE TABLE `tasks` (
 
 # Por fim, inicie o servidor backend com:
 
-  npm start
-  Configuração do Frontend:
+  npm run dev
 
 # A partir da raiz do projeto, navegue até o diretório /frontend:
-
+  
+  Configuração do Frontend:
   cd ../frontend
   Abra o arquivo index.HTML em seu navegador para acessar a interface do frontend. Você pode fazer isso arrastando o arquivo para o navegador ou usando uma extensão de servidor local, se estiver usando um editor como o VS Code.
